@@ -149,14 +149,13 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
+        // page 31 for data
         auto* channelData = buffer.getWritePointer (channel);
         fillBuffer(channel, bufferSize, delayBufferSize, channelData);
         ReadFromDelayBuffer(channel, delayBufferSize, bufferSize, buffer, delayBuffer);
        
         
     }
-    
-
     
     writePosition += bufferSize;
     writePosition %= delayBufferSize;
@@ -169,8 +168,8 @@ void  KaiKhorusAudioProcessor::ReadFromDelayBuffer(int channel, int delayBufferS
     //1 second of audio from the past
     //getsamplerate = 1 second
     auto readPosition = writePosition - getSampleRate();
-    float startGain = 0.7f;
-    float endGain = 0.7f;
+    float startGain = 0.2f;
+    float endGain = startGain;
     
     if(readPosition < 0)
     {
@@ -197,8 +196,8 @@ void  KaiKhorusAudioProcessor::ReadFromDelayBuffer(int channel, int delayBufferS
 
 void KaiKhorusAudioProcessor::fillBuffer(int channel, int bufferSize, int delayBufferSize, float* channelData)
 {
-    float startGain = 0.1f;
-    float endGain = 0.1f;
+    float startGain = 1.0f;
+    float endGain = 1.0f;
     
     if(delayBufferSize > bufferSize + writePosition)
     {
