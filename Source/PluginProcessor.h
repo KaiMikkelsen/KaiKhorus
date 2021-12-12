@@ -52,13 +52,18 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    float feedback, time;
 
 private:
     juce::AudioBuffer<float> delayBuffer;
-    void fillDelayBuffer(juce::AudioBuffer<float>& delayBuffer, int channel);
-    void ReadFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer);
+    void fillDelayBuffer(juce::AudioBuffer<float>& delayBuffer, int channel, float feedbackGain);
+    int getDelayTime(int milliseconds);
+    void readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer);
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
     int writePosition {0};
+    double maxNumberofDelaySeconds {1.5};
+    
+    
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KaiKhorusAudioProcessor)
