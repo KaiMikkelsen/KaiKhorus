@@ -96,6 +96,9 @@ void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     auto delayBufferSize = sampleRate * maxNumberofDelaySeconds;
     delayBuffer.setSize(getTotalNumOutputChannels(), (int)delayBufferSize);
     
+    width = 1.0f;
+    frequency = 1.0f;
+    
     
 }
 
@@ -137,25 +140,53 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    
+    float phase = lfoPhase;
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
     
-
-
-
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        //auto* channelData = buffer.getWritePointer (channel);
         fillDelayBuffer(buffer, channel, 1.0f);
-        readFromDelayBuffer(channel, buffer, delayBuffer);
-        fillDelayBuffer(buffer, channel, feedback);
+        for(int sample = 0; sample < buffer.getNumSamples(); sample++)
+        {
+            
+            
+            
+            
+            float localDelayTime = width * lfo(phase); //* (float)getSampleRate();
+            
+            DBG("delaytimeis is: " << localDelayTime);
+            
+            
+            
+            phase += frequency * (1.0f / (float) getSampleRate());
+            if (phase >= 1.0f)
+            {
+                phase -= 1.0f;
+            }
+            
+            
+        }
+        
+        
+        //auto* channelData = buffer.getWritePointer (channel);
+        
+        //readFromDelayBuffer(channel, buffer, delayBuffer);
+        //fillDelayBuffer(buffer, channel, feedback);
      
     }
-    
+    lfoPhase = phase;
     updateBufferPositions(buffer, delayBuffer);
  
+    
+    
+}
+
+
+float KaiKhorusAudioProcessor::lfo(float phase)
+{
+    return (0.5f + 0.5f * sinf (2.0f * M_PI * phase)); //osicllate between values of 0 and 1
     
     
 }
@@ -171,16 +202,14 @@ void KaiKhorusAudioProcessor::updateBufferPositions(juce::AudioBuffer<float>&buf
     
 }
 
-
-
-void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer)
+void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer, int readPosition)
 {
     //1 second of audio from the past
     //getsamplerate = 1 second
     auto bufferSize = buffer.getNumSamples();
     auto delayBufferSize = delayBuffer.getNumSamples();
     
-    int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * time / 1000)) % delayBufferSize;
+//    int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * 1 / 1000)) % delayBufferSize;
     float startGain = 1.0f;
     float endGain = startGain;
     
@@ -206,6 +235,7 @@ void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffe
 
     
 }
+
 
 void KaiKhorusAudioProcessor::fillDelayBuffer(juce::AudioBuffer<float>& buffer, int channel, float feedbackGain)
 {
@@ -273,3 +303,40 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new KaiKhorusAudioProcessor();
 }
+
+
+/*
+void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer, int readPosition)
+{
+    //1 second of audio from the past
+    //getsamplerate = 1 second
+    auto bufferSize = buffer.getNumSamples();
+    auto delayBufferSize = delayBuffer.getNumSamples();
+    
+//    int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * 1 / 1000)) % delayBufferSize;
+    float startGain = 1.0f;
+    float endGain = startGain;
+    
+    if(readPosition < 0)
+    {
+        readPosition += delayBufferSize;
+    }
+    
+    if(readPosition + bufferSize < delayBufferSize)
+    {
+        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), bufferSize, startGain, endGain);
+    }
+    else
+    {
+        auto numSamplesToEnd = delayBufferSize - readPosition;
+        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), numSamplesToEnd, startGain, endGain);
+        
+        auto numSamplesAtStart = bufferSize - numSamplesToEnd;
+        buffer.addFromWithRamp(channel, numSamplesToEnd, delayBuffer.getReadPointer(channel, 0), numSamplesAtStart, startGain, endGain);
+        
+        
+    }
+
+    
+}
+*/

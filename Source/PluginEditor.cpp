@@ -18,30 +18,28 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     
     
-    addAndMakeVisible(&Feedback);
-    Feedback.setValue(0.8f);
-    Feedback.setRange(0.0f, 1.0f, 0.1);
-    
-    addAndMakeVisible(&Time);
-    Time.setValue(300.0f);
-    Time.setRange(0.0f, 2000.0f, 1);
-    
-    Feedback.onValueChange = [this] {
-        audioProcessor.feedback= Feedback.getValue();
+    addAndMakeVisible(&Width);
+    Width.setValue(1.0f);//This is milliseconds
+    Width.setRange(0.0f, 2.0f, 0.1f);
+    Width.onValueChange = [this] {
+        audioProcessor.width= Width.getValue();
     };
     
-    Time.onValueChange = [this] {
-        audioProcessor.time= Time.getValue();
+    addAndMakeVisible(widthLabel);
+    widthLabel.setText("Width", juce::dontSendNotification);
+    widthLabel.attachToComponent(&Width, true);
+    
+    addAndMakeVisible(&Frequency);
+    Frequency.setValue(1.0f);
+    Frequency.setRange(0.0f, 10.0f, 1.0f);
+    
+    Frequency.onValueChange = [this] {
+        audioProcessor.frequency= Frequency.getValue();
     };
 
-    addAndMakeVisible(feedbackLabel);
-    feedbackLabel.setText("Feedback", juce::dontSendNotification);
-    feedbackLabel.attachToComponent(&Feedback, true);
-    
-    
-    addAndMakeVisible(timeLabel);
-    timeLabel.setText("Time", juce::dontSendNotification);
-    timeLabel.attachToComponent(&Time, true);
+    addAndMakeVisible(frequencyLabel);
+    frequencyLabel.setText("Frequency", juce::dontSendNotification);
+    frequencyLabel.attachToComponent(&Frequency, true);
     
     
     
@@ -65,8 +63,8 @@ void KaiKhorusAudioProcessorEditor::paint (juce::Graphics& g)
 
 void KaiKhorusAudioProcessorEditor::resized()
 {
-    Time.setBounds(50, 50, 200, 50);
-    Feedback.setBounds(50, 150, 200, 50);
+    Width.setBounds(50, 50, 200, 50);
+    Frequency.setBounds(50, 150, 200, 50);
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
