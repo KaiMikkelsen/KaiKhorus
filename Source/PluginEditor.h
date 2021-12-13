@@ -29,10 +29,10 @@ private:
     // access the processor object that created it.
     KaiKhorusAudioProcessor& audioProcessor;
     
-    juce::Label feedbackLabel;
-    juce::Label timeLabel;
-    juce::Slider Feedback;
-    juce::Slider Time;
+    juce::Label frequencyLabel;
+    juce::Label widthLabel;
+    juce::Slider Width;
+    juce::Slider Frequency;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KaiKhorusAudioProcessorEditor)
 };
