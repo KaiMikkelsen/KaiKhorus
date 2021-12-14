@@ -19,7 +19,7 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     
     addAndMakeVisible(&Width);
-    Width.setValue(1.0f);//This is milliseconds
+    Width.setValue(0.0f);//This is milliseconds
     Width.setRange(0.0f, 2.0f, 0.1f);
     Width.onValueChange = [this] {
         audioProcessor.width= Width.getValue();

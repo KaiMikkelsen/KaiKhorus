@@ -59,14 +59,14 @@ private:
     juce::AudioBuffer<float> delayBuffer;
     void fillDelayBuffer(juce::AudioBuffer<float>& delayBuffer, int channel, float feedbackGain);
     int getDelayTime(int milliseconds);
-    void readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer, int readPosition);
+    void readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer);
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
     
     float lfo(float phase);
     
     int writePosition {0};
     int readPosition {0};
-    double maxNumberofDelaySeconds {1.5};
+    double maxNumberofDelaySeconds {2};
     float lfoPhase {0};
     
     
