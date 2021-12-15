@@ -93,10 +93,11 @@ void KaiKhorusAudioProcessor::changeProgramName (int index, const juce::String& 
 //==============================================================================
 void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    auto delayBufferSize = sampleRate * maxNumberofDelaySeconds;
+    width = 1.0f;
+    auto delayBufferSize = sampleRate * width;
     delayBuffer.setSize(getTotalNumOutputChannels(), (int)delayBufferSize);
     
-    width = 0;
+    //width = 0.0f;
     frequency = 1.0f;
     
     
@@ -143,7 +144,7 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     float phase = lfoPhase;
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-    auto delayBufferSize = delayBuffer.getNumSamples();
+    float delayBufferSize = delayBuffer.getNumSamples();
     
     
     
@@ -161,18 +162,24 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             
             
             auto bufferSize = buffer.getNumSamples();
-            float localDelayTime = width * lfo(phase) * (float)getSampleRate();
+            float localDelayTime = (width/1000) * lfo(phase) * (float)getSampleRate();
            
      
             float delayWritePosition = delayBufferSize + writePosition + sample - localDelayTime;
-            
+       
             float readPosition = fmodf(delayWritePosition, delayBufferSize);
       
             
             int localReadPosition = floorf (readPosition);
             
+            
+            
+            float fraction = readPosition - (float)localReadPosition;
+            float delayed0 = delayData[(localReadPosition + 0)];
+            float delayed1 = delayData[(localReadPosition + 1)];
+            float out = delayed0 + fraction * (delayed1 - delayed0);
 
-            channelData[sample] = delayData[localReadPosition];
+            channelData[sample] = out;//delayData[localReadPosition];
            
             /*
             if(channelData[sample] != delayData[readPosition + sample])
@@ -210,7 +217,8 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
 float KaiKhorusAudioProcessor::lfo(float phase)
 {
-    return (0.5f + 0.5f * sinf (2.0f * M_PI * phase)); //osicllate between values of 0 and 1
+    float value = 0.5f + 0.5f * sinf (2.0f * M_PI * phase);
+    return value; //osicllate between values of 0 and 1
     
     
 }
