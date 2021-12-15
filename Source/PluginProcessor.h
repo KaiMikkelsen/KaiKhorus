@@ -54,8 +54,13 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     float width, frequency;
+    float maxBufferDelay {20.0f};
+    
 
 private:
+    
+    //KaiKhorusAudioProcessorEditor& editor;
+    
     juce::AudioBuffer<float> delayBuffer;
     void fillDelayBuffer(juce::AudioBuffer<float>& delayBuffer, int channel, float feedbackGain);
     int getDelayTime(int milliseconds);
@@ -68,6 +73,7 @@ private:
     int readPosition {0};
     double maxNumberofDelaySeconds {2};
     float lfoPhase {0};
+    
     
     
     

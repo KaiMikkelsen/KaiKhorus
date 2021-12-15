@@ -23,6 +23,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    float maxDelayTimeMs;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -33,6 +34,8 @@ private:
     juce::Label widthLabel;
     juce::Slider Width;
     juce::Slider Frequency;
+    
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KaiKhorusAudioProcessorEditor)
 };

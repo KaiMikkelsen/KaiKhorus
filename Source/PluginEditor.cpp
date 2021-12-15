@@ -17,10 +17,10 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     // editor's size to whatever you need it to be.
     
     
-    
     addAndMakeVisible(&Width);
-    Width.setValue(0.0f);//This is milliseconds
-    Width.setRange(0.0f, 2.0f, 0.1f);
+    Width.setValue(1.0f);//This is milliseconds
+    Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.1f);
+    audioProcessor.width = 1.0f;
     Width.onValueChange = [this] {
         audioProcessor.width= Width.getValue();
     };
@@ -31,8 +31,8 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     addAndMakeVisible(&Frequency);
     Frequency.setValue(1.0f);
-    Frequency.setRange(0.0f, 10.0f, 1.0f);
-    
+    Frequency.setRange(0.0f, 10.0f, 0.1f);
+    audioProcessor.frequency = 1.0f;
     Frequency.onValueChange = [this] {
         audioProcessor.frequency= Frequency.getValue();
     };
@@ -42,8 +42,7 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     frequencyLabel.attachToComponent(&Frequency, true);
     
     
-    
-    setSize (400, 300);
+    setSize (400, 400);
 }
 
 KaiKhorusAudioProcessorEditor::~KaiKhorusAudioProcessorEditor()
