@@ -22,7 +22,7 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.1f);
     audioProcessor.width = 1.0f;
     Width.onValueChange = [this] {
-        audioProcessor.width= Width.getValue();
+        audioProcessor.width= Width.getValue()/1000; //to get ms
     };
     
     addAndMakeVisible(widthLabel);

@@ -94,11 +94,9 @@ void KaiKhorusAudioProcessor::changeProgramName (int index, const juce::String& 
 void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     maxBufferDelay = 20.0f;
-    int delayBufferSize = sampleRate * maxBufferDelay + 1;
-    delayBuffer.setSize(getTotalNumOutputChannels(), (int)delayBufferSize);
+    delayBufferSize = sampleRate * maxBufferDelay + 1;
+    delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferSize);
     frequency = 1.0f;
-    
-    
 }
 
 void KaiKhorusAudioProcessor::releaseResources()
@@ -138,59 +136,25 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
-    int delayBufferSize = (int)delayBuffer.getNumSamples();
-    float bufferSize = buffer.getNumSamples();
-    
     float phase;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        
         fillDelayBuffer(buffer, channel, 1.0f);
         phase = lfoPhase;
-     
-        float* delayData = delayBuffer.getWritePointer (channel);
         float* channelData = buffer.getWritePointer (channel);
         
         
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
             
-            
-            
-            //auto bufferSize = buffer.getNumSamples();
-            float localDelayTime = (width/1000) * lfo(phase) * (float)getSampleRate();
-           
-     
+            float localDelayTime = width * lfo(phase) * (float)getSampleRate();//Delay Time in ms
             float delayWritePosition = delayBufferSize + writePosition + sample - localDelayTime;
-
-       
             float readPosition = fmodf(delayWritePosition, delayBufferSize);
                   
-            int localReadPosition = juce::roundToInt(readPosition);//floorf (readPosition);
-            
-            
-            //Cubic Interpolation
-            float fraction = readPosition - (float)localReadPosition;
-            float fractionSqrt = fraction * fraction;
-            float fractionCube = fractionSqrt * fraction;
-
-            float sample0 = delayData[(localReadPosition - 1 + delayBufferSize) % delayBufferSize];
-            float sample1 = delayData[(localReadPosition + 0)];
-            float sample2 = delayData[(localReadPosition + 1) % delayBufferSize];
-            float sample3 = delayData[(localReadPosition + 2) % delayBufferSize];
-
-            float a0 = - 0.5f * sample0 + 1.5f * sample1 - 1.5f * sample2 + 0.5f * sample3;
-            float a1 = sample0 - 2.5f * sample1 + 2.0f * sample2 - 0.5f * sample3;
-            float a2 = - 0.5f * sample0 + 0.5f * sample2;
-            float a3 = sample1;
-            float out = a0 * fractionCube + a1 * fractionSqrt + a2 * fraction + a3;
-        
-            
+            int localReadPosition = floorf (readPosition);
+           
+            float out = cubicInterpolation(channel, readPosition, localReadPosition);
             
             channelData[sample] = out;
            
@@ -200,31 +164,53 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             {
                 phase -= 1.0f;
             }
-            
-            
-            
+
         }
-        
-        
-        //auto* channelData = buffer.getWritePointer (channel);
-        
-        //readFromDelayBuffer(channel, buffer, delayBuffer);
-        //fillDelayBuffer(buffer, channel, feedback);
-        
-     
+
     }
     updateBufferPositions(buffer, delayBuffer);
     lfoPhase = phase;
     
     
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear (i, 0, buffer.getNumSamples());
+}
+
+float KaiKhorusAudioProcessor::cubicInterpolation(int channel, float readPosition, int localReadPosition)
+{
+    
+    float* delayData = delayBuffer.getWritePointer (channel);
+    
+    float fraction = readPosition - (float)localReadPosition;
+    float fractionSqrt = fraction * fraction;
+    float fractionCube = fractionSqrt * fraction;
+
+    float sample0 = delayData[(localReadPosition - 1 + delayBufferSize) % delayBufferSize];
+    float sample1 = delayData[(localReadPosition + 0)];
+    float sample2 = delayData[(localReadPosition + 1) % delayBufferSize];
+    float sample3 = delayData[(localReadPosition + 2) % delayBufferSize];
+
+    float a0 = - 0.5f * sample0 + 1.5f * sample1 - 1.5f * sample2 + 0.5f * sample3;
+    float a1 = sample0 - 2.5f * sample1 + 2.0f * sample2 - 0.5f * sample3;
+    float a2 = - 0.5f * sample0 + 0.5f * sample2;
+    float a3 = sample1;
+    return a0 * fractionCube + a1 * fractionSqrt + a2 * fraction + a3;
     
 }
 
-
 float KaiKhorusAudioProcessor::lfo(float phase)
 {
-    float value = 0.5f + 0.5f * sinf (2.0f * M_PI * phase);
-    return value; //osicllate between values of 0 and 1
+    //float value = 0.5f + 0.5f * sinf (2.0f * M_PI * phase); for sin wave lfo
+    float out;
+    if (phase < 0.25f)
+        out = 0.5f + 2.0f * phase;
+    else if (phase < 0.75f)
+        out = 1.0f - 2.0f * (phase - 0.25f);
+    else
+        out = 2.0f * (phase - 0.75f);
+    
+   
+    return out; //osicllate between values of 0 and 1
     
     
 }
@@ -232,7 +218,6 @@ float KaiKhorusAudioProcessor::lfo(float phase)
 void KaiKhorusAudioProcessor::updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer)
 {
         auto bufferSize = buffer.getNumSamples();
-        auto delayBufferSize = delayBuffer.getNumSamples();
     
         writePosition += bufferSize;
         writePosition %= delayBufferSize;
@@ -242,10 +227,7 @@ void KaiKhorusAudioProcessor::updateBufferPositions(juce::AudioBuffer<float>&buf
 
 void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer)
 {
-    //1 second of audio from the past
-    //getsamplerate = 1 second
     auto bufferSize = buffer.getNumSamples();
-    auto delayBufferSize = delayBuffer.getNumSamples();
     
     int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * 0)) % delayBufferSize;
     float startGain = 1.0f;

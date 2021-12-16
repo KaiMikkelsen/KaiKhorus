@@ -66,9 +66,11 @@ private:
     int getDelayTime(int milliseconds);
     void readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer);
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
-    
+    float cubicInterpolation(int channel, float readPosition, int localReadPosition);
     float lfo(float phase);
     
+    
+    int delayBufferSize;
     int writePosition {0};
     int readPosition {0};
     double maxNumberofDelaySeconds {2};
