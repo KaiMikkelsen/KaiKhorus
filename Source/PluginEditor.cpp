@@ -18,9 +18,9 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     
     addAndMakeVisible(&Width);
-    Width.setValue(1.0f);//This is milliseconds
-    Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.1f);
-    audioProcessor.width = 1.0f;
+    Width.setValue(3.69f);//This is milliseconds
+    Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.01f);
+    audioProcessor.width = 3.69f;
     Width.onValueChange = [this] {
         audioProcessor.width= Width.getValue()/1000; //to get ms
     };
@@ -30,9 +30,9 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     widthLabel.attachToComponent(&Width, true);
     
     addAndMakeVisible(&Frequency);
-    Frequency.setValue(1.0f);
-    Frequency.setRange(0.0f, 10.0f, 0.1f);
-    audioProcessor.frequency = 1.0f;
+    Frequency.setValue(0.513f);
+    Frequency.setRange(0.0f, 10.0f, 0.001f);
+    audioProcessor.frequency = 0.513f;
     Frequency.onValueChange = [this] {
         audioProcessor.frequency= Frequency.getValue();
     };
@@ -40,6 +40,20 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     addAndMakeVisible(frequencyLabel);
     frequencyLabel.setText("Frequency", juce::dontSendNotification);
     frequencyLabel.attachToComponent(&Frequency, true);
+    
+    
+    addAndMakeVisible(&wetDry);
+    wetDry.setValue(1.0f);
+    wetDry.setRange(0.0f, 1.0f, 0.1f);
+    audioProcessor.wetDry = 1.0f;
+    wetDry.onValueChange = [this] {
+        audioProcessor.wetDry = wetDry.getValue();
+    };
+
+    addAndMakeVisible(wetDryLabel);
+    wetDryLabel.setText("Wet Dry", juce::dontSendNotification);
+    wetDryLabel.attachToComponent(&wetDry, true);
+    
     
     
     setSize (400, 400);
@@ -64,6 +78,7 @@ void KaiKhorusAudioProcessorEditor::resized()
 {
     Width.setBounds(50, 50, 200, 50);
     Frequency.setBounds(50, 150, 200, 50);
+    wetDry.setBounds(50, 250, 200, 50);
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }

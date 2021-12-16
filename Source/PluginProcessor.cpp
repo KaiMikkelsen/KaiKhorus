@@ -97,6 +97,7 @@ void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     delayBufferSize = sampleRate * maxBufferDelay + 1;
     delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferSize);
     frequency = 1.0f;
+    wetDry = 1.0f;
 }
 
 void KaiKhorusAudioProcessor::releaseResources()
@@ -116,9 +117,21 @@ bool KaiKhorusAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
+    if (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::mono())
+    {
+        // Mono-to-mono
+        if (layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono())
+            return true;
+    }
+    else if (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo())
+    {
+        // Mono-to-stereo OR stereo-to-stereo
+        if ((layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono()) ||
+                (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo()))
+            return true;
+    }
+    //
+    return false;
 
     // This checks if the input layout matches the output layout
    #if ! JucePlugin_IsSynth
@@ -148,7 +161,18 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
             
-            float localDelayTime = width * lfo(phase) * (float)getSampleRate();//Delay Time in ms
+            float localDelayTime;
+            if(channel == 0)
+            {
+                localDelayTime = width * lfo(phase + 0.5) * (float)getSampleRate();//Delay Time in ms
+            }
+            else
+            {
+                
+                localDelayTime = width * lfo(phase) * (float)getSampleRate();//Delay Time in ms
+            }
+            
+          
             float delayWritePosition = delayBufferSize + writePosition + sample - localDelayTime;
             float readPosition = fmodf(delayWritePosition, delayBufferSize);
                   
@@ -156,9 +180,20 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
            
             float out = cubicInterpolation(channel, readPosition, localReadPosition);
             
-            channelData[sample] = out;
-           
+            if(channel == 0)
+            {
+                channelData[sample] += wetDry * out;
+                
+            }
+            else
+            {
+                channelData[sample] += wetDry * out;
             
+            }
+            
+            
+           
+
             phase += frequency * (1.0f / (float) getSampleRate());
             if (phase >= 1.0f)
             {

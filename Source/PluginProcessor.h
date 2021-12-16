@@ -55,6 +55,7 @@ public:
     
     float width, frequency;
     float maxBufferDelay {20.0f};
+    float wetDry;
     
 
 private:

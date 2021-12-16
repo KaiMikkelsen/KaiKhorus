@@ -23,7 +23,6 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    float maxDelayTimeMs;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -34,6 +33,9 @@ private:
     juce::Label widthLabel;
     juce::Slider Width;
     juce::Slider Frequency;
+    
+    juce::Slider wetDry;
+    juce::Label wetDryLabel;
     
     
 
