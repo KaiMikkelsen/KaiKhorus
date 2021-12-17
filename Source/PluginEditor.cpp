@@ -56,6 +56,21 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     
     
+    addAndMakeVisible(oneSoundButton);
+    oneSoundButton.addListener(this);
+    oneSoundButton.setToggleable(true);
+    oneSoundButton.setClickingTogglesState(true);
+    oneSoundButton.setButtonText("1st Sound");
+    
+    addAndMakeVisible(twoSoundButton);
+    twoSoundButton.addListener(this);
+    twoSoundButton.setToggleable(true);
+    twoSoundButton.setButtonText("2nd Sound");
+    
+    
+    
+    
+    
     setSize (400, 400);
 }
 
@@ -79,6 +94,24 @@ void KaiKhorusAudioProcessorEditor::resized()
     Width.setBounds(50, 50, 200, 50);
     Frequency.setBounds(50, 150, 200, 50);
     wetDry.setBounds(50, 250, 200, 50);
+    oneSoundButton.setBounds(50, 300, 50, 50);
+    twoSoundButton.setBounds(100, 300, 50, 50);
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+}
+
+void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
+{
+    if(button == &oneSoundButton)
+    {
+        int test = oneSoundButton.getToggleState();
+        //DBG("first button clicked");
+        DBG("toggle state is: " << test);
+    }
+    else if(button == &twoSoundButton)
+    {
+        DBG("second button clicked");
+        
+    }
+    
 }

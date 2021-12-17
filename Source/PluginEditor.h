@@ -14,7 +14,8 @@
 //==============================================================================
 /**
 */
-class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor
+class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor,
+public juce::Button::Listener
 {
 public:
     KaiKhorusAudioProcessorEditor (KaiKhorusAudioProcessor&);
@@ -23,6 +24,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void buttonClicked(juce::Button* button) override;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -36,6 +38,9 @@ private:
     
     juce::Slider wetDry;
     juce::Label wetDryLabel;
+    
+    juce::TextButton oneSoundButton;
+    juce::TextButton twoSoundButton;
     
     
 
