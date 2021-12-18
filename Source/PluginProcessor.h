@@ -56,6 +56,8 @@ public:
     float width, frequency;
     float maxBufferDelay {20.0f};
     float wetDry;
+    int chorusOneButton {0};
+    int chorusTwoButton {0};
     
 
 private:
@@ -69,13 +71,19 @@ private:
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
     float cubicInterpolation(int channel, float readPosition, int localReadPosition);
     float lfo(float phase);
-    
+    float calculateOut(int channel, int sample, float phase, float width, float frequency);
     
     int delayBufferSize;
     int writePosition {0};
     int readPosition {0};
     double maxNumberofDelaySeconds {2};
     float lfoPhase {0};
+    
+    float button1Frequency;
+    float button1Width;
+    
+    float button2Frequency;
+    float button2Width;
     
     
     

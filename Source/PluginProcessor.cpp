@@ -98,6 +98,13 @@ void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferSize);
     frequency = 1.0f;
     wetDry = 1.0f;
+    
+    button1Frequency = 0.513;
+    button1Width = 0.00369;
+    
+    button2Frequency = 1.0f;
+    button2Width = 0.00411;
+    
 }
 
 void KaiKhorusAudioProcessor::releaseResources()
@@ -156,11 +163,11 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
         fillDelayBuffer(buffer, channel, 1.0f);
         phase = lfoPhase;
         float* channelData = buffer.getWritePointer (channel);
-        
+
         
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
-            
+            /*
             float localDelayTime;
             if(channel == 0)
             {
@@ -168,7 +175,6 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             }
             else
             {
-                
                 localDelayTime = width * lfo(phase) * (float)getSampleRate();//Delay Time in ms
             }
             
@@ -179,6 +185,34 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             int localReadPosition = floorf (readPosition);
            
             float out = cubicInterpolation(channel, readPosition, localReadPosition);
+            */
+            float out;
+            float secondOut;
+            if(chorusOneButton && !chorusTwoButton)
+            {
+                width = button1Width;
+                frequency = button1Frequency;
+                out = calculateOut(channel, sample, phase, width, frequency);
+            }
+            else if(chorusTwoButton && !chorusOneButton)
+            {
+                width = button2Width;
+                frequency = button2Frequency;
+                out = calculateOut(channel, sample, phase, width, frequency);
+            }
+            else if(chorusTwoButton && !chorusOneButton)
+            {
+                
+                
+            }
+            else
+            {
+                width = 0;
+                frequency = 0;
+                out = calculateOut(channel, sample, phase, width, frequency);
+            }
+            
+            
             
             if(channel == 0)
             {
@@ -209,6 +243,33 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+}
+
+
+float KaiKhorusAudioProcessor::calculateOut(int channel, int sample, float phase, float width, float frequency)
+{
+    float localDelayTime;
+    if(channel == 0)
+    {
+        localDelayTime = width * lfo(phase + 0.5) * (float)getSampleRate();//Delay Time in ms
+    }
+    else
+    {
+        localDelayTime = width * lfo(phase) * (float)getSampleRate();//Delay Time in ms
+    }
+    
+  
+    float delayWritePosition = delayBufferSize + writePosition + sample - localDelayTime;
+    float readPosition = fmodf(delayWritePosition, delayBufferSize);
+          
+    int localReadPosition = floorf (readPosition);
+   
+    float out = cubicInterpolation(channel, readPosition, localReadPosition);
+    
+    return out;
+    
+    
+    
 }
 
 float KaiKhorusAudioProcessor::cubicInterpolation(int channel, float readPosition, int localReadPosition)

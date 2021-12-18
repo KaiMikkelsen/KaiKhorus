@@ -20,9 +20,9 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     addAndMakeVisible(&Width);
     Width.setValue(3.69f);//This is milliseconds
     Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.01f);
-    audioProcessor.width = 3.69f;
+    //audioProcessor.width = 3.69f;
     Width.onValueChange = [this] {
-        audioProcessor.width= Width.getValue()/1000; //to get ms
+        //audioProcessor.width= Width.getValue()/1000; //to get ms
     };
     
     addAndMakeVisible(widthLabel);
@@ -32,9 +32,9 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     addAndMakeVisible(&Frequency);
     Frequency.setValue(0.513f);
     Frequency.setRange(0.0f, 10.0f, 0.001f);
-    audioProcessor.frequency = 0.513f;
+    //audioProcessor.frequency = 0.513f;
     Frequency.onValueChange = [this] {
-        audioProcessor.frequency= Frequency.getValue();
+       // audioProcessor.frequency= Frequency.getValue();
     };
 
     addAndMakeVisible(frequencyLabel);
@@ -65,6 +65,7 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     addAndMakeVisible(twoSoundButton);
     twoSoundButton.addListener(this);
     twoSoundButton.setToggleable(true);
+    twoSoundButton.setClickingTogglesState(true);
     twoSoundButton.setButtonText("2nd Sound");
     
     
@@ -102,15 +103,32 @@ void KaiKhorusAudioProcessorEditor::resized()
 
 void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
 {
+    int state;
     if(button == &oneSoundButton)
     {
-        int test = oneSoundButton.getToggleState();
-        //DBG("first button clicked");
-        DBG("toggle state is: " << test);
+        state = oneSoundButton.getToggleState();
+        if(state == 1)
+        {
+            audioProcessor.chorusOneButton = 1;
+        }
+        else if(state == 0)
+        {
+            audioProcessor.chorusOneButton = 0;
+        }
+        
+        
     }
     else if(button == &twoSoundButton)
     {
-        DBG("second button clicked");
+        state = twoSoundButton.getToggleState();
+        if(state == 1)
+        {
+            audioProcessor.chorusTwoButton = 1;
+        }
+        else if(state == 0)
+        {
+            audioProcessor.chorusTwoButton = 0;
+        }
         
     }
     
