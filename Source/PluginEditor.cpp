@@ -17,6 +17,11 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     // editor's size to whatever you need it to be.
     
     
+    wetDryValue = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, "wetDry", wetDry);
+    buttonOne = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treeState, "buttonOne", oneButton);
+    buttonTwo = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treeState, "buttonTwo", twoButton);
+
+/*
     addAndMakeVisible(&Width);
     Width.setValue(3.69f);//This is milliseconds
     Width.setRange(0.0f, audioProcessor.maxBufferDelay, 0.01f);
@@ -41,14 +46,15 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     frequencyLabel.setText("Frequency", juce::dontSendNotification);
     frequencyLabel.attachToComponent(&Frequency, true);
     
-    
+    */
     addAndMakeVisible(&wetDry);
-    wetDry.setValue(1.0f);
-    wetDry.setRange(0.0f, 1.0f, 0.1f);
-    audioProcessor.wetDry = 1.0f;
-    wetDry.onValueChange = [this] {
-        audioProcessor.wetDry = wetDry.getValue();
-    };
+    wetDry.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    //wetDry.setValue(1.0f);
+    //wetDry.setRange(0.0f, 1.0f, 0.001f);
+    //audioProcessor.wetDry = 1.0f;
+    //wetDry.onValueChange = [this] {
+        //audioProcessor.wetDry = wetDry.getValue();
+    //};
 
     addAndMakeVisible(wetDryLabel);
     wetDryLabel.setText("Wet Dry", juce::dontSendNotification);
@@ -56,19 +62,19 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     
     
     
-    addAndMakeVisible(oneSoundButton);
-    oneSoundButton.addListener(this);
-    oneSoundButton.setToggleable(true);
-    oneSoundButton.setClickingTogglesState(true);
-    oneSoundButton.setButtonText("1st Sound");
+    addAndMakeVisible(oneButton);
+    //oneButton.addListener(this);
+    //oneButton.setToggleable(true);
+    oneButton.setClickingTogglesState(true);
+    oneButton.setButtonText("1st Sound");
     
-    addAndMakeVisible(twoSoundButton);
-    twoSoundButton.addListener(this);
-    twoSoundButton.setToggleable(true);
-    twoSoundButton.setClickingTogglesState(true);
-    twoSoundButton.setButtonText("2nd Sound");
+    addAndMakeVisible(twoButton);
+    //twoButton.addListener(this);
+    //twoButton.setToggleable(true);
+    twoButton.setClickingTogglesState(true);
+    twoButton.setButtonText("2nd Sound");
     
-    
+
     
     
     
@@ -87,7 +93,7 @@ void KaiKhorusAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Kais Plugin", getLocalBounds(), juce::Justification::centred, 1);
+    //g.drawFittedText ("Kais Plugin", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void KaiKhorusAudioProcessorEditor::resized()
@@ -95,41 +101,10 @@ void KaiKhorusAudioProcessorEditor::resized()
     Width.setBounds(50, 50, 200, 50);
     Frequency.setBounds(50, 150, 200, 50);
     wetDry.setBounds(50, 250, 200, 50);
-    oneSoundButton.setBounds(50, 300, 50, 50);
-    twoSoundButton.setBounds(100, 300, 50, 50);
+    oneButton.setBounds(50, 300, 50, 50);
+    twoButton.setBounds(100, 300, 50, 50);
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
 
-void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
-{
-    int state;
-    if(button == &oneSoundButton)
-    {
-        state = oneSoundButton.getToggleState();
-        if(state == 1)
-        {
-            audioProcessor.chorusOneButton = 1;
-        }
-        else if(state == 0)
-        {
-            audioProcessor.chorusOneButton = 0;
-        }
-        
-        
-    }
-    else if(button == &twoSoundButton)
-    {
-        state = twoSoundButton.getToggleState();
-        if(state == 1)
-        {
-            audioProcessor.chorusTwoButton = 1;
-        }
-        else if(state == 0)
-        {
-            audioProcessor.chorusTwoButton = 0;
-        }
-        
-    }
-    
-}
+

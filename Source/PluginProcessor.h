@@ -56,8 +56,9 @@ public:
     float width, frequency;
     float maxBufferDelay {20.0f};
     float wetDry;
-    int chorusOneButton {0};
-    int chorusTwoButton {0};
+   // bool *chorusOneButton;
+   // bool *chorusTwoButton;
+    juce::AudioProcessorValueTreeState treeState;
     
 
 private:

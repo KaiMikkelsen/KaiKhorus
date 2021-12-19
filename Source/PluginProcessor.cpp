@@ -19,9 +19,14 @@ KaiKhorusAudioProcessor::KaiKhorusAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("wetDry", "wetDry", 0.0f, 1.0f, 0.60f),
+                                        std::make_unique<juce::AudioParameterBool>("buttonOne", "buttonOne", false),
+                                        std::make_unique<juce::AudioParameterBool>("buttonTwo", "buttonTwo", false)}
+          )
 #endif
 {
+    treeState.state = juce::ValueTree("savedParams");
 }
 
 KaiKhorusAudioProcessor::~KaiKhorusAudioProcessor()
@@ -97,7 +102,6 @@ void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     delayBufferSize = sampleRate * maxBufferDelay + 1;
     delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferSize);
     frequency = 1.0f;
-    wetDry = 1.0f;
     
     button1Frequency = 0.513;
     button1Width = 0.00369;
@@ -133,12 +137,9 @@ bool KaiKhorusAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
     else if (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo())
     {
         // Mono-to-stereo OR stereo-to-stereo
-        if ((layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono()) ||
-                (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo()))
+        if ((layouts.getMainInputChannelSet() == juce::AudioChannelSet::mono()) || (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo()))
             return true;
     }
-    //
-    return false;
 
     // This checks if the input layout matches the output layout
    #if ! JucePlugin_IsSynth
@@ -164,25 +165,31 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
         phase = lfoPhase;
         float* channelData = buffer.getWritePointer (channel);
 
+        //chorusOneButton = treeState.getRawParameterValue("buttonOne");
+        auto *chorusOneButton = treeState.getRawParameterValue("buttonOne");
+        auto *chorusTwoButton = treeState.getRawParameterValue("buttonTwo");
+        auto wetDry = treeState.getRawParameterValue("wetDry");
+        
+       
         
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
 
             float out = 0;
             float secondOut = 0;
-            if(chorusOneButton && !chorusTwoButton)
+            if(*chorusOneButton && !*chorusTwoButton)
             {
                 width = button1Width;
                 frequency = button1Frequency;
                 out = calculateOut(channel, sample, phase, width, frequency);
             }
-            else if(chorusTwoButton && !chorusOneButton)
+            else if(*chorusTwoButton && !*chorusOneButton)
             {
                 width = button2Width;
                 frequency = button2Frequency;
                 out = calculateOut(channel, sample, phase, width, frequency);
             }
-            else if(chorusTwoButton && chorusOneButton)
+            else if(*chorusTwoButton && *chorusOneButton)
             {
                 width = button1Width;
                 frequency = button1Frequency;
@@ -206,14 +213,12 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             
             if(channel == 0)
             {//THE ONE WITH ISSUES
-                float test = 1.0f - wetDry;
-                channelData[sample] = channelData[sample] * (1.0f - wetDry) +  wetDry * out + wetDry * secondOut;
+                channelData[sample] = channelData[sample] * (1.0f - *wetDry) +  *wetDry * out + *wetDry * secondOut;
                 
             }
             else
             {
-                float test = 1.0f - wetDry;
-                channelData[sample] = channelData[sample] * (1.0f - wetDry) + wetDry * out + wetDry * secondOut;
+                channelData[sample] = channelData[sample] * (1.0f - *wetDry) + *wetDry * out + *wetDry * secondOut;
                 //channelData[sample] = 0;
             
             }
@@ -404,12 +409,31 @@ void KaiKhorusAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    std::unique_ptr<juce::XmlElement> xml (treeState.state.createXml());
+    copyXmlToBinary(*xml, destData);
+    
+    
 }
 
 void KaiKhorusAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
+    std::unique_ptr<juce::XmlElement> theParams (getXmlFromBinary(data, sizeInBytes));
+    
+    if(theParams != nullptr)
+    {
+        if(theParams  -> hasTagName(treeState.state.getType()))
+        {
+            treeState.state = juce::ValueTree::fromXml(*theParams);
+            
+        }
+        
+        
+    }
+    
+    
 }
 
 //==============================================================================
@@ -419,39 +443,3 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new KaiKhorusAudioProcessor();
 }
 
-
-/*
-void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer, int readPosition)
-{
-    //1 second of audio from the past
-    //getsamplerate = 1 second
-    auto bufferSize = buffer.getNumSamples();
-    auto delayBufferSize = delayBuffer.getNumSamples();
-    
-//    int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * 1 / 1000)) % delayBufferSize;
-    float startGain = 1.0f;
-    float endGain = startGain;
-    
-    if(readPosition < 0)
-    {
-        readPosition += delayBufferSize;
-    }
-    
-    if(readPosition + bufferSize < delayBufferSize)
-    {
-        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), bufferSize, startGain, endGain);
-    }
-    else
-    {
-        auto numSamplesToEnd = delayBufferSize - readPosition;
-        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), numSamplesToEnd, startGain, endGain);
-        
-        auto numSamplesAtStart = bufferSize - numSamplesToEnd;
-        buffer.addFromWithRamp(channel, numSamplesToEnd, delayBuffer.getReadPointer(channel, 0), numSamplesAtStart, startGain, endGain);
-        
-        
-    }
-
-    
-}
-*/
