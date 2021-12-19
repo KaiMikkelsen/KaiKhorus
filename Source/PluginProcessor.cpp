@@ -20,7 +20,7 @@ KaiKhorusAudioProcessor::KaiKhorusAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("wetDry", "wetDry", 0.0f, 1.0f, 0.60f),
+treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("wetDry", "wetDry", 0.0f, 1.0f, 0.60f),//set 0.60f as default value as that's my favorite sound
                                         std::make_unique<juce::AudioParameterBool>("buttonOne", "buttonOne", false),
                                         std::make_unique<juce::AudioParameterBool>("buttonTwo", "buttonTwo", false)}
           )
@@ -98,17 +98,8 @@ void KaiKhorusAudioProcessor::changeProgramName (int index, const juce::String& 
 //==============================================================================
 void KaiKhorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    maxBufferDelay = 20.0f;
-    delayBufferSize = sampleRate * maxBufferDelay + 1;
+    delayBufferSize = sampleRate * maxBufferDelay;
     delayBuffer.setSize(getTotalNumOutputChannels(), delayBufferSize);
-    frequency = 1.0f;
-    
-    button1Frequency = 0.513;
-    button1Width = 0.00369;
-    
-    button2Frequency = 1.0f;
-    button2Width = 0.00411;
-    
 }
 
 void KaiKhorusAudioProcessor::releaseResources()
@@ -165,13 +156,12 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
         phase = lfoPhase;
         float* channelData = buffer.getWritePointer (channel);
 
-        //chorusOneButton = treeState.getRawParameterValue("buttonOne");
+
         auto *chorusOneButton = treeState.getRawParameterValue("buttonOne");
         auto *chorusTwoButton = treeState.getRawParameterValue("buttonTwo");
         auto wetDry = treeState.getRawParameterValue("wetDry");
         
-       
-        
+
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
 
@@ -324,38 +314,6 @@ void KaiKhorusAudioProcessor::updateBufferPositions(juce::AudioBuffer<float>&buf
     
 }
 
-void  KaiKhorusAudioProcessor::readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer)
-{
-    auto bufferSize = buffer.getNumSamples();
-    
-    int readPosition = static_cast<int>(delayBufferSize + writePosition - (getSampleRate() * 0)) % delayBufferSize;
-    float startGain = 1.0f;
-    float endGain = startGain;
-    
-    if(readPosition < 0)
-    {
-        readPosition += delayBufferSize;
-    }
-    
-    if(readPosition + bufferSize < delayBufferSize)
-    {
-        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), bufferSize, startGain, endGain);
-    }
-    else
-    {
-        auto numSamplesToEnd = delayBufferSize - readPosition;
-        buffer.addFromWithRamp(channel, 0, delayBuffer.getReadPointer(channel, readPosition), numSamplesToEnd, startGain, endGain);
-        
-        auto numSamplesAtStart = bufferSize - numSamplesToEnd;
-        buffer.addFromWithRamp(channel, numSamplesToEnd, delayBuffer.getReadPointer(channel, 0), numSamplesAtStart, startGain, endGain);
-        
-        
-    }
-
-    
-}
-
-
 void KaiKhorusAudioProcessor::fillDelayBuffer(juce::AudioBuffer<float>& buffer, int channel, float feedbackGain)
 {
     auto bufferSize = buffer.getNumSamples();
@@ -384,11 +342,8 @@ void KaiKhorusAudioProcessor::fillDelayBuffer(juce::AudioBuffer<float>& buffer, 
         //Now copy the rest to the beginning
         delayBuffer.copyFromWithRamp(channel, 0, channelData + numSamplesToEnd, numSamplesAtStart, startGain, endGain);
         
-   
     }
    
-    
-    
 }
 
 
@@ -411,8 +366,6 @@ void KaiKhorusAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     // as intermediaries to make it easy to save and load complex data.
     std::unique_ptr<juce::XmlElement> xml (treeState.state.createXml());
     copyXmlToBinary(*xml, destData);
-    
-    
 }
 
 void KaiKhorusAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
@@ -429,11 +382,7 @@ void KaiKhorusAudioProcessor::setStateInformation (const void* data, int sizeInB
             treeState.state = juce::ValueTree::fromXml(*theParams);
             
         }
-        
-        
     }
-    
-    
 }
 
 //==============================================================================

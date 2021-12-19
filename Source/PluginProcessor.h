@@ -54,21 +54,15 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     float width, frequency;
-    float maxBufferDelay {20.0f};
+    float maxBufferDelay {0.01f}; //Allows for maximum 10ms of delay, the longest this chorus needs is 4.11ms needed for button 2
     float wetDry;
-   // bool *chorusOneButton;
-   // bool *chorusTwoButton;
     juce::AudioProcessorValueTreeState treeState;
     
 
 private:
     
-    //KaiKhorusAudioProcessorEditor& editor;
-    
     juce::AudioBuffer<float> delayBuffer;
     void fillDelayBuffer(juce::AudioBuffer<float>& delayBuffer, int channel, float feedbackGain);
-    int getDelayTime(int milliseconds);
-    void readFromDelayBuffer(int channel, juce::AudioBuffer<float>& buffer, juce::AudioBuffer<float>& delayBuffer);
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
     float cubicInterpolation(int channel, float readPosition, int localReadPosition);
     float lfo(float phase);
@@ -77,14 +71,15 @@ private:
     int delayBufferSize;
     int writePosition {0};
     int readPosition {0};
-    double maxNumberofDelaySeconds {2};
     float lfoPhase {0};
     
-    float button1Frequency;
-    float button1Width;
     
-    float button2Frequency;
-    float button2Width;
+    
+    float button1Frequency {0.513f}; //in Hertz
+    float button1Width {0.00369f}; //3.69ms of delay
+    
+    float button2Frequency {1.0f}; //in Hertz
+    float button2Width {0.00411f}; //
     
     
     
