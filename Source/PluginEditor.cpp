@@ -23,19 +23,23 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
 
     addAndMakeVisible(&wetDry);
     wetDry.setSliderStyle(juce::Slider::SliderStyle::Rotary);
+    wetDry.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
+    
 
     addAndMakeVisible(wetDryLabel);
-    wetDryLabel.setText("Wet Dry", juce::dontSendNotification);
-    wetDryLabel.attachToComponent(&wetDry, true);
+    wetDryLabel.setText("Mix", juce::dontSendNotification);
+    wetDryLabel.setJustificationType (juce::Justification::centred);
+   // wetDryLabel.setColour (juce::Label::backgroundColourId, juce::Colours::lightgreen);
+    
     
     
     addAndMakeVisible(oneButton);
     oneButton.setClickingTogglesState(true);
-    oneButton.setButtonText("1st Sound");
+    oneButton.setButtonText("I");
     
     addAndMakeVisible(twoButton);
     twoButton.setClickingTogglesState(true);
-    twoButton.setButtonText("2nd Sound");
+    twoButton.setButtonText("II");
     
 
     setSize (400, 400);
@@ -58,10 +62,19 @@ void KaiKhorusAudioProcessorEditor::paint (juce::Graphics& g)
 
 void KaiKhorusAudioProcessorEditor::resized()
 {
+    int sliderSize = 200;
+    int labelWidth = 100;
+    int labelHeight = 50;
+    
+    int buttonWidth = 100;
+    int buttonHeight = 75;
 
-    wetDry.setBounds(50, 250, 200, 50);
-    oneButton.setBounds(50, 300, 50, 50);
-    twoButton.setBounds(100, 300, 50, 50);
+    wetDry.setBounds(getWidth()/2 - sliderSize/2, getHeight()/3 - sliderSize/2, sliderSize, sliderSize);
+    wetDryLabel.setBounds(getWidth()/2 - labelWidth/2, getHeight()/2, labelWidth, labelHeight);
+    
+    
+    oneButton.setBounds(getWidth()/2 - 100, 3* getHeight()/4.5, buttonWidth, buttonHeight);
+    twoButton.setBounds(getWidth()/2, 3* getHeight()/4.5, buttonWidth, buttonHeight);
 
 }
 

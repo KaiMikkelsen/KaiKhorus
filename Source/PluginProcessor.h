@@ -53,11 +53,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    float width, frequency;
-    float maxBufferDelay {0.01f}; //Allows for maximum 10ms of delay, the longest this chorus needs is 4.11ms needed for button 2
-    float wetDry;
     juce::AudioProcessorValueTreeState treeState;
-    
+
 
 private:
     
@@ -66,20 +63,24 @@ private:
     void updateBufferPositions(juce::AudioBuffer<float>&buffer, juce::AudioBuffer<float>&delayBuffer);
     float cubicInterpolation(int channel, float readPosition, int localReadPosition);
     float lfo(float phase);
-    float calculateOut(int channel, int sample, float phase, float width, float frequency);
+    float calculateChorusSample(int channel, int sample, float phase, float width, float frequency);
+    float incrementPhase(float frequency, float phase);
     
     int delayBufferSize;
     int writePosition {0};
     int readPosition {0};
-    float lfoPhase {0};
+    float lfoPhase1 {0};
+    float lfoPhase2 {0};
     
+    float maxBufferDelay {0.500f}; //Allows for maximum 500ms of delay, the longest this chorus needs is 4.11ms needed for button 2
+    float wetDry;
     
     
     float button1Frequency {0.513f}; //in Hertz
     float button1Width {0.00369f}; //3.69ms of delay
     
     float button2Frequency {1.0f}; //in Hertz
-    float button2Width {0.00411f}; //
+    float button2Width {0.00411f}; //4.11ms of delay
     
     
     
