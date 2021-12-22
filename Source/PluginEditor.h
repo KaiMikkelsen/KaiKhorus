@@ -10,11 +10,12 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "myLookAndFeel.h"
 
 //==============================================================================
 /**
 */
-class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor
+class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Button::Listener
 {
 public:
     KaiKhorusAudioProcessorEditor (KaiKhorusAudioProcessor&);
@@ -23,11 +24,13 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void buttonClicked(juce::Button* button) override;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     KaiKhorusAudioProcessor& audioProcessor;
+    myLookAndFeel myLookAndFeelV1;
     
     
     juce::Slider wetDry;
@@ -35,6 +38,14 @@ private:
     
     juce::TextButton oneButton;
     juce::TextButton twoButton;
+    
+    
+   
+
+    
+    juce::Slider myKnobSlider1;
+
+    
     
 public://Bottom Up destruction, need this destroyed before the actual slider itself, see https://www.youtube.com/watch?v=NE8d91yYBJ8&ab_channel=TheAudioProgrammer
     
