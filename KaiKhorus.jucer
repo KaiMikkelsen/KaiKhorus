@@ -3,7 +3,27 @@
 <JUCERPROJECT id="Q6B5rm" name="KaiKhorus" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="Ehh3kT" name="KaiKhorus">
+    <GROUP id="{20F23EEB-CFD7-055C-2822-50E5C7E9675A}" name="Fonts">
+      <FILE id="E72hPh" name="SpaceSurfer_Demo.ttf" compile="0" resource="1"
+            file="Fonts/SpaceSurfer_Demo.ttf"/>
+      <FILE id="XnfQWF" name="AstroSpace-eZ2Bg.ttf" compile="0" resource="1"
+            file="Fonts/AstroSpace-eZ2Bg.ttf"/>
+      <FILE id="v78bDs" name="Potra.ttf" compile="0" resource="1" file="Fonts/Potra.ttf"/>
+      <FILE id="kshWDm" name="Moonhouse-yE5M.ttf" compile="0" resource="1"
+            file="Fonts/Moonhouse-yE5M.ttf"/>
+      <FILE id="jUGWMK" name="Micra Bold.ttf" compile="0" resource="1" file="Fonts/Micra Bold.ttf"/>
+      <FILE id="rfUE1c" name="Micra Normal.ttf" compile="0" resource="1"
+            file="Fonts/Micra Normal.ttf"/>
+    </GROUP>
+    <GROUP id="{D90478C3-1BE3-7285-A62D-864432EACD4E}" name="Images">
+      <FILE id="dddbud" name="bluey.png" compile="0" resource="1" file="Images/bluey.png"/>
+      <FILE id="zryOr4" name="LEDOff.png" compile="0" resource="1" file="Images/LEDOff.png"/>
+      <FILE id="VO91ZX" name="LEDon.png" compile="0" resource="1" file="Images/LEDon.png"/>
+    </GROUP>
     <GROUP id="{A9552AB2-7A91-1A00-2761-B175132CB227}" name="Source">
+      <FILE id="fQP00N" name="myLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/myLookAndFeel.cpp"/>
+      <FILE id="Z9oBke" name="myLookAndFeel.h" compile="0" resource="0" file="Source/myLookAndFeel.h"/>
       <FILE id="cpgf0Z" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="LBuFDH" name="PluginProcessor.h" compile="0" resource="0"
@@ -11,6 +31,10 @@
       <FILE id="cGsuvw" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="zFiVUA" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="C46Hma" name="SpaceBackground.jpeg" compile="0" resource="1"
+            file="../../SpaceBackground.jpeg"/>
+      <FILE id="Vh7n5X" name="FoxCavalier-WyzrE.ttf" compile="0" resource="1"
+            file="../../../Downloads/fox-cavalier-font/FoxCavalier-WyzrE.ttf"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

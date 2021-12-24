@@ -20,7 +20,9 @@
 myLookAndFeel::myLookAndFeel()
 {
     juce::File knobImageFile1 = juce::File::getSpecialLocation
-    (juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("purple3.png");
+    //(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("purple3.png");
+    (juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("bluey.png");
+    //(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("darkgreen.png");
     img1 = juce::ImageCache::getFromFile(knobImageFile1);
 }
 
@@ -67,6 +69,35 @@ void myLookAndFeel::drawRotarySlider(juce::Graphics& g,
             juce::Justification::horizontallyCentred | juce::Justification::centred, 1);
     }
 }
+
+void myLookAndFeel::drawButtonText (juce::Graphics& g, juce::TextButton& button,
+                                     bool /*shouldDrawButtonAsHighlighted*/, bool /*shouldDrawButtonAsDown*/)
+{
+    //juce::Font font (getTextButtonFont (button, button.getHeight()));
+    //juce::Font font = (juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Normal_ttf, BinaryData::Micra_Normal_ttfSize)));
+    
+    juce::Font font = (juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::AstroSpaceeZ2Bg_ttf, BinaryData::AstroSpaceeZ2Bg_ttfSize)));
+    font.setHeight(24.0f);
+    g.setFont (font);
+    g.setColour (button.findColour (button.getToggleState() ? juce::TextButton::textColourOnId
+                                                            : juce::TextButton::textColourOffId)
+                       .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+
+    const int yIndent = fmin (4, button.proportionOfHeight (0.3f));
+    const int cornerSize = fmin (button.getHeight(), button.getWidth()) / 2;
+
+    const int fontHeight = juce::roundToInt (font.getHeight() * 0.6f);
+    const int leftIndent  = fmin (fontHeight, 2 + cornerSize / (button.isConnectedOnLeft() ? 4 : 2));
+    const int rightIndent = fmin (fontHeight, 2 + cornerSize / (button.isConnectedOnRight() ? 4 : 2));
+    const int textWidth = button.getWidth() - leftIndent - rightIndent;
+
+    if (textWidth > 0)
+        g.drawFittedText (button.getButtonText(),
+                          leftIndent, yIndent, textWidth, button.getHeight() - yIndent * 2,
+                          juce::Justification::centred, 2);
+}
+
+
 /*
 //==============================================================================
 myLookAndFeelV2::myLookAndFeelV2()

@@ -15,7 +15,8 @@
 //==============================================================================
 /**
 */
-class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Button::Listener
+class KaiKhorusAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                       public juce::Button::Listener
 {
 public:
     KaiKhorusAudioProcessorEditor (KaiKhorusAudioProcessor&);
@@ -32,16 +33,26 @@ private:
     KaiKhorusAudioProcessor& audioProcessor;
     myLookAndFeel myLookAndFeelV1;
     
+    void activateLed(juce::Button* button);
+    
     
     juce::Slider wetDry;
     juce::Label wetDryLabel;
+    juce::Label titleLabel;
     
     juce::TextButton oneButton;
     juce::TextButton twoButton;
     
     
-   
+    juce::Image led;
+    juce::Image ledOn;
+    
+    int testWidth;
+    
+    //juce::glowEffect glow;
 
+    juce::ImageComponent oneButtonLED;
+    juce::ImageComponent twoButtonLED;
     
     juce::Slider myKnobSlider1;
 
