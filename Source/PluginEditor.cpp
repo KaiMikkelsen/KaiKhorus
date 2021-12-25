@@ -22,7 +22,7 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     juce::Font mixFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
     mixFont.setHeight(17.0f);
     juce::Font titleFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
-    titleFont.setHeight(24.0f);
+    titleFont.setHeight(27.0f);
     
     
     addAndMakeVisible(titleLabel);
@@ -121,18 +121,18 @@ void KaiKhorusAudioProcessorEditor::resized()
     int buttonHeight = 75;
     int ledWidth = 12;
 
-    titleLabel.setBounds(0, 0, 400, 25);
+    titleLabel.setBounds(0, 5, 400, 25);
     
     
     mix.setBounds(getWidth()/2 - sliderSize/2, getHeight()/2.75 - sliderSize/2, sliderSize, sliderSize);
     mixLabel.setBounds(getWidth()/2 - labelWidth/2, getHeight()/2 + 4, labelWidth, labelHeight);
     
     
-    oneButton.setBounds(getWidth()/2 - buttonWidth, 3* getHeight()/4, buttonWidth, buttonHeight);
-    twoButton.setBounds(getWidth()/2, 3* getHeight()/4, buttonWidth, buttonHeight);
+    oneButton.setBounds(getWidth()/2 - buttonWidth, 3 * getHeight()/4, buttonWidth, buttonHeight);
+    twoButton.setBounds(getWidth()/2, 3 * getHeight()/4, buttonWidth, buttonHeight);
     
-    oneButtonLED.setBounds(getWidth()/2 - 56, 3* getHeight()/4 - 20, ledWidth, ledWidth);
-    twoButtonLED.setBounds(getWidth()/2 + 44, 3* getHeight()/4 - 20, ledWidth, ledWidth);
+    oneButtonLED.setBounds(getWidth()/2 - 56, 3 * getHeight()/4 - 20, ledWidth, ledWidth);
+    twoButtonLED.setBounds(getWidth()/2 + 44, 3 * getHeight()/4 - 20, ledWidth, ledWidth);
 
 }
 
