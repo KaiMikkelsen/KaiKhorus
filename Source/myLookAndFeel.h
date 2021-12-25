@@ -1,19 +1,3 @@
-//
-//  myLookAndFeel.h
-//  KaiKhorus
-//
-//  Created by Kai Mikkelsen on 2021-12-20.
-//
-
-/*
-  ==============================================================================
-
-    Created: 14 Dec 2017 10:16:04am
-    Author:  Stefan Remberg
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
 
@@ -32,7 +16,7 @@ public:
     
     
 private:
-    juce::Image img1;
+    juce::Image sliderImage;
 
 };
 

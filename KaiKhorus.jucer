@@ -11,6 +11,8 @@
             file="Fonts/Micra Normal.ttf"/>
     </GROUP>
     <GROUP id="{D90478C3-1BE3-7285-A62D-864432EACD4E}" name="Images">
+      <FILE id="hh6KXp" name="SpaceBackground.jpeg" compile="0" resource="1"
+            file="Images/SpaceBackground.jpeg"/>
       <FILE id="dddbud" name="bluey.png" compile="0" resource="1" file="Images/bluey.png"/>
       <FILE id="zryOr4" name="LEDOff.png" compile="0" resource="1" file="Images/LEDOff.png"/>
       <FILE id="VO91ZX" name="LEDon.png" compile="0" resource="1" file="Images/LEDon.png"/>
@@ -26,8 +28,6 @@
       <FILE id="cGsuvw" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="zFiVUA" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="C46Hma" name="SpaceBackground.jpeg" compile="0" resource="1"
-            file="../../SpaceBackground.jpeg"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

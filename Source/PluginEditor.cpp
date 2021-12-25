@@ -123,7 +123,6 @@ void KaiKhorusAudioProcessorEditor::resized()
 
     titleLabel.setBounds(0, 5, 400, 25);
     
-    
     mix.setBounds(getWidth()/2 - sliderSize/2, getHeight()/2.75 - sliderSize/2, sliderSize, sliderSize);
     mixLabel.setBounds(getWidth()/2 - labelWidth/2, getHeight()/2 + 4, labelWidth, labelHeight);
     

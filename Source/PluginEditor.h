@@ -1,11 +1,3 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
@@ -33,9 +25,7 @@ private:
     KaiKhorusAudioProcessor& audioProcessor;
     myLookAndFeel myLookAndFeelV1;
     void initializeButton(juce::TextButton *button);
-    
     void activateLedState(juce::Button* button);
-    
     
     juce::Slider mix;
     juce::Label mixLabel;
@@ -53,9 +43,7 @@ private:
     
     juce::Colour buttonOnColour;
     juce::Colour buttonOffColour;
-    
-
-    
+ 
     
 public://Bottom Up destruction, need this destroyed before the actual slider itself, see https://www.youtube.com/watch?v=NE8d91yYBJ8&ab_channel=TheAudioProgrammer
     
