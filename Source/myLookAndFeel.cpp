@@ -19,11 +19,16 @@
 //==============================================================================
 myLookAndFeel::myLookAndFeel()
 {
-    juce::File knobImageFile1 = juce::File::getSpecialLocation
+    //juce::File knobImageFile1 = juce::File::getSpecialLocation
     //(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("purple3.png");
-    (juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("bluey.png");
+    //(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("bluey.png");
+    
+    img1 = juce::ImageCache::getFromMemory(BinaryData::bluey_png, BinaryData::bluey_pngSize);
+    
+    //juce::ImageCache::getFromMemory(BinaryData::LEDOff_png, BinaryData::LEDOff_pngSize);
+    
     //(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("darkgreen.png");
-    img1 = juce::ImageCache::getFromFile(knobImageFile1);
+    //img1 = juce::ImageCache::getFromFile(knobImageFile1);
 }
 
 //==============================================================================

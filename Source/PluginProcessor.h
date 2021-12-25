@@ -73,7 +73,7 @@ private:
     float lfoPhase2 {0};
     
     float maxBufferDelay {0.500f}; //Allows for maximum 500ms of delay, the longest this chorus needs is 4.11ms needed for button 2
-    float wetDry;
+    float mix;
     
     
     float button1Frequency {0.513f}; //in Hertz

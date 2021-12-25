@@ -4,14 +4,9 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="Ehh3kT" name="KaiKhorus">
     <GROUP id="{20F23EEB-CFD7-055C-2822-50E5C7E9675A}" name="Fonts">
-      <FILE id="E72hPh" name="SpaceSurfer_Demo.ttf" compile="0" resource="1"
-            file="Fonts/SpaceSurfer_Demo.ttf"/>
-      <FILE id="XnfQWF" name="AstroSpace-eZ2Bg.ttf" compile="0" resource="1"
-            file="Fonts/AstroSpace-eZ2Bg.ttf"/>
-      <FILE id="v78bDs" name="Potra.ttf" compile="0" resource="1" file="Fonts/Potra.ttf"/>
-      <FILE id="kshWDm" name="Moonhouse-yE5M.ttf" compile="0" resource="1"
-            file="Fonts/Moonhouse-yE5M.ttf"/>
       <FILE id="jUGWMK" name="Micra Bold.ttf" compile="0" resource="1" file="Fonts/Micra Bold.ttf"/>
+      <FILE id="UCS3E2" name="AstroSpace-eZ2Bg.ttf" compile="0" resource="1"
+            file="Fonts/AstroSpace-eZ2Bg.ttf"/>
       <FILE id="rfUE1c" name="Micra Normal.ttf" compile="0" resource="1"
             file="Fonts/Micra Normal.ttf"/>
     </GROUP>

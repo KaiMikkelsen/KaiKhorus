@@ -32,35 +32,34 @@ private:
     // access the processor object that created it.
     KaiKhorusAudioProcessor& audioProcessor;
     myLookAndFeel myLookAndFeelV1;
+    void initializeButton(juce::TextButton *button);
     
-    void activateLed(juce::Button* button);
+    void activateLedState(juce::Button* button);
     
     
-    juce::Slider wetDry;
-    juce::Label wetDryLabel;
+    juce::Slider mix;
+    juce::Label mixLabel;
     juce::Label titleLabel;
     
     juce::TextButton oneButton;
     juce::TextButton twoButton;
     
-    
-    juce::Image led;
+    juce::Image ledOff;
     juce::Image ledOn;
     
-    int testWidth;
     
-    //juce::glowEffect glow;
-
     juce::ImageComponent oneButtonLED;
     juce::ImageComponent twoButtonLED;
     
-    juce::Slider myKnobSlider1;
+    juce::Colour buttonOnColour;
+    juce::Colour buttonOffColour;
+    
 
     
     
 public://Bottom Up destruction, need this destroyed before the actual slider itself, see https://www.youtube.com/watch?v=NE8d91yYBJ8&ab_channel=TheAudioProgrammer
     
-    std::unique_ptr <juce::AudioProcessorValueTreeState::SliderAttachment> wetDryValue;
+    std::unique_ptr <juce::AudioProcessorValueTreeState::SliderAttachment> mixValue;
     std::unique_ptr <juce::AudioProcessorValueTreeState::ButtonAttachment> buttonOne;
     std::unique_ptr <juce::AudioProcessorValueTreeState::ButtonAttachment> buttonTwo;
 

@@ -20,7 +20,7 @@ KaiKhorusAudioProcessor::KaiKhorusAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("wetDry", "wetDry", 0.0f, 1.0f, 0.60f),//set 0.60f as default value as that's my favorite sound
+treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("mix", "mix", 0.0f, 1.0f, 0.60f),//set 0.60f as default value as that's my favorite sound
                                         std::make_unique<juce::AudioParameterBool>("buttonOne", "buttonOne", false),
                                         std::make_unique<juce::AudioParameterBool>("buttonTwo", "buttonTwo", false)}
           )
@@ -159,7 +159,7 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
         auto *chorusOneButton = treeState.getRawParameterValue("buttonOne");
         auto *chorusTwoButton = treeState.getRawParameterValue("buttonTwo");
-        auto wetDry = treeState.getRawParameterValue("wetDry");
+        auto mix = treeState.getRawParameterValue("mix");
         
 
         for(int sample = 0; sample < buffer.getNumSamples(); sample++)
@@ -176,7 +176,7 @@ void KaiKhorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
                 secondButtonOut = calculateChorusSample(channel, sample, phase2, button2Width, button2Frequency);
             }
                 
-                channelData[sample] = (channelData[sample] * (1.0f - *wetDry)) + (*wetDry * firstButtonOut) + (*wetDry * secondButtonOut);
+                channelData[sample] = (channelData[sample] * (1.0f - *mix)) + (*mix * firstButtonOut) + (*mix * secondButtonOut);
                 
             
             phase1 = incrementPhase(button1Frequency, phase1);
