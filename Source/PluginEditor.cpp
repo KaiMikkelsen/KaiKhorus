@@ -11,12 +11,10 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     buttonOne = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treeState, "buttonOne", oneButton);
     buttonTwo = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(audioProcessor.treeState, "buttonTwo", twoButton);
 
-
     juce::Font mixFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
     mixFont.setHeight(17.0f);
     juce::Font titleFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
     titleFont.setHeight(27.0f);
-    
     
     addAndMakeVisible(titleLabel);
     titleLabel.setText("Space Octopus Chorus", juce::dontSendNotification);
@@ -27,19 +25,16 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     mix.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     mix.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
     
-    
     addAndMakeVisible(mixLabel);
     mixLabel.setFont(mixFont);
     mixLabel.setText("MIX", juce::dontSendNotification);
     mixLabel.setJustificationType (juce::Justification::centred);
-    
 
     initializeButton(&oneButton);
     oneButton.setButtonText("I");
     
     initializeButton(&twoButton);
     twoButton.setButtonText("II");
-    
      
     ledOff = juce::ImageCache::getFromMemory(BinaryData::LEDOff_png, BinaryData::LEDOff_pngSize);
     ledOn = juce::ImageCache::getFromMemory(BinaryData::LEDon_png, BinaryData::LEDon_pngSize);
@@ -51,7 +46,6 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     addAndMakeVisible(twoButtonLED);
     twoButtonLED.setImage(ledOff);
     activateLedState(&twoButton);
-    
     
     setSize (400, 400);
 }
@@ -69,7 +63,6 @@ void KaiKhorusAudioProcessorEditor::paint (juce::Graphics& g)
 
 void KaiKhorusAudioProcessorEditor::activateLedState(juce::Button* button)
 {
-    
       int state;
       if(button == &oneButton)
       {
@@ -96,7 +89,6 @@ void KaiKhorusAudioProcessorEditor::activateLedState(juce::Button* button)
               twoButtonLED.setImage(ledOff);
           }
       }
-   
 }
 
 void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
@@ -106,7 +98,6 @@ void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
 
 void KaiKhorusAudioProcessorEditor::resized()
 {
-    
     int sliderSize = 150;
     int labelWidth = 100;
     int labelHeight = 50;
@@ -127,8 +118,6 @@ void KaiKhorusAudioProcessorEditor::resized()
     
     oneButtonLED.setBounds(getWidth()/2 - 56, 3 * getHeight()/4 - 20, ledWidth, ledWidth);
     twoButtonLED.setBounds(getWidth()/2 + 44, 3 * getHeight()/4 - 20, ledWidth, ledWidth);
-    
-
 }
 
 void KaiKhorusAudioProcessorEditor::initializeButton(juce::TextButton *button)

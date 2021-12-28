@@ -298,7 +298,6 @@ void KaiKhorusAudioProcessor::fillDelayBuffer(juce::AudioBuffer<float>& buffer, 
         delayBuffer.copyFromWithRamp(channel, 0, channelData + numSamplesToEnd, numSamplesAtStart, startGain, endGain);
         
     }
-   
 }
 
 

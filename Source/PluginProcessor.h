@@ -75,16 +75,11 @@ private:
     float maxBufferDelay {0.500f}; //Allows for maximum 500ms of delay, the longest this chorus needs is 4.11ms needed for button 2
     float mix;
     
-    
     float button1Frequency {0.513f}; //in Hertz
     float button1Width {0.00369f}; //3.69ms of delay
     
     float button2Frequency {1.0f}; //in Hertz
     float button2Width {0.00411f}; //4.11ms of delay
     
-    
-    
-    
-    //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KaiKhorusAudioProcessor)
 };

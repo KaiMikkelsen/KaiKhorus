@@ -13,8 +13,6 @@ public:
     void drawButtonText (juce::Graphics&, juce::TextButton&,
                          bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
     
-    
-    
 private:
     juce::Image sliderImage;
 

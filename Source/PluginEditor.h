@@ -37,7 +37,6 @@ private:
     juce::Image ledOff;
     juce::Image ledOn;
     
-    
     juce::ImageComponent oneButtonLED;
     juce::ImageComponent twoButtonLED;
     
