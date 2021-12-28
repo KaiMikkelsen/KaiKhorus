@@ -14,11 +14,13 @@ KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProc
     juce::Font mixFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
     mixFont.setHeight(17.0f);
     juce::Font titleFont = juce::Font (juce::Typeface::createSystemTypefaceFor (BinaryData::Micra_Bold_ttf, BinaryData::Micra_Bold_ttfSize));
-    titleFont.setHeight(27.0f);
+    titleFont.setHeight(28.0f);
+   
     
     addAndMakeVisible(titleLabel);
     titleLabel.setText("Space Octopus Chorus", juce::dontSendNotification);
     titleLabel.setFont(titleFont);
+    //titleLabel.setColour((juce::Label::ColourIds::textColourId), juce::Colour(118, 0, 182));
     
     addAndMakeVisible(&mix);
     mix.setLookAndFeel(&myLookAndFeelV1);
@@ -57,7 +59,8 @@ KaiKhorusAudioProcessorEditor::~KaiKhorusAudioProcessorEditor()
 //==============================================================================
 void KaiKhorusAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    juce::Image background = juce::ImageCache::getFromMemory(BinaryData::SpaceBackground_jpeg, BinaryData::SpaceBackground_jpegSize);
+    //juce::Image background = juce::ImageCache::getFromMemory(BinaryData::SpaceBackground_jpeg, BinaryData::SpaceBackground_jpegSize);
+    juce::Image background = juce::ImageCache::getFromMemory(BinaryData::octopus2_jpeg, BinaryData::octopus2_jpegSize);
     g.drawImageAt (background, 0, 0);
 }
 
@@ -105,13 +108,12 @@ void KaiKhorusAudioProcessorEditor::resized()
     int buttonWidth = 100;
     int buttonHeight = 75;
     int ledWidth = 12;
-
     //Because there isnt many components these bounds are a bit specific, they could use some refactoring in the future to make them easier to understand
     
     titleLabel.setBounds(0, 5, 400, 25);
     
-    mix.setBounds(getWidth()/2 - sliderSize/2, getHeight()/2.75 - sliderSize/2, sliderSize, sliderSize);
-    mixLabel.setBounds(getWidth()/2 - labelWidth/2, getHeight()/2 + 4, labelWidth, labelHeight);
+    mix.setBounds(getWidth()/2 - sliderSize/2, getHeight()/2.75 - sliderSize/2 + 10, sliderSize, sliderSize);
+    mixLabel.setBounds(getWidth()/2 - labelWidth/2, getHeight()/2 + 4 + 10, labelWidth, labelHeight);
     
     oneButton.setBounds(getWidth()/2 - buttonWidth, 3 * getHeight()/4, buttonWidth, buttonHeight);
     twoButton.setBounds(getWidth()/2, 3 * getHeight()/4, buttonWidth, buttonHeight);

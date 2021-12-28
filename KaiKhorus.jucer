@@ -13,6 +13,7 @@
             file="Fonts/Micra Normal.ttf"/>
     </GROUP>
     <GROUP id="{D90478C3-1BE3-7285-A62D-864432EACD4E}" name="Images">
+      <FILE id="nTxb4G" name="octopus2.jpeg" compile="0" resource="1" file="Images/octopus2.jpeg"/>
       <FILE id="hh6KXp" name="SpaceBackground.jpeg" compile="0" resource="1"
             file="Images/SpaceBackground.jpeg"/>
       <FILE id="dddbud" name="bluey.png" compile="0" resource="1" file="Images/bluey.png"/>
