@@ -2,8 +2,7 @@
 
 This is a chorus plugin based on the Juno 60 chorus.
 
-
-![Screen Shot 2021-12-26 at 5 20 32 PM](https://user-images.githubusercontent.com/43660096/147423375-1826ca9e-5a86-4641-891a-f2a525ceb0ca.png)
+![Screen Shot 2021-12-28 at 3 30 15 PM](https://user-images.githubusercontent.com/43660096/147614601-a2169529-d971-454e-b2e0-3f8291b9a943.png)
 
 Button 1 is used for a more subtle chorus sound, while button 2 is used for a stronger chorus. The mix knob controls the amount of dry to wet signal the chorus applies, with the knob all the way to right the sound will be all chorus, with the mix knob all the way to the left, the sound will only be the dry signal, with no chorus applied.
 
