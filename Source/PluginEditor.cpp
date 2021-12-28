@@ -1,15 +1,8 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-//==============================================================================
+
 KaiKhorusAudioProcessorEditor::KaiKhorusAudioProcessorEditor (KaiKhorusAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
@@ -113,6 +106,7 @@ void KaiKhorusAudioProcessorEditor::buttonClicked(juce::Button* button)
 
 void KaiKhorusAudioProcessorEditor::resized()
 {
+    
     int sliderSize = 150;
     int labelWidth = 100;
     int labelHeight = 50;

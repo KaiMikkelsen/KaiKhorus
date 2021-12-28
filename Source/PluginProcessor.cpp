@@ -21,7 +21,7 @@ KaiKhorusAudioProcessor::KaiKhorusAudioProcessor()
                      #endif
                        ),
 treeState(*this, nullptr, "PARAMETER", {std::make_unique<juce::AudioParameterFloat>("mix", "mix", 0.0f, 1.0f, 0.60f),//set 0.60f as default value as that's my favorite sound
-                                        std::make_unique<juce::AudioParameterBool>("buttonOne", "buttonOne", false),
+                                        std::make_unique<juce::AudioParameterBool>("buttonOne", "buttonOne", true),
                                         std::make_unique<juce::AudioParameterBool>("buttonTwo", "buttonTwo", false)}
           )
 #endif

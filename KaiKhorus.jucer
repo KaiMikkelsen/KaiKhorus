@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="Q6B5rm" name="KaiKhorus" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginFormats="buildAU,buildVST3" pluginManufacturer="Kai Mikkelsen"
+              pluginName="Space-Octopus" pluginDesc="Space-Octopus">
   <MAINGROUP id="Ehh3kT" name="KaiKhorus">
     <GROUP id="{20F23EEB-CFD7-055C-2822-50E5C7E9675A}" name="Fonts">
       <FILE id="jUGWMK" name="Micra Bold.ttf" compile="0" resource="1" file="Fonts/Micra Bold.ttf"/>
@@ -34,8 +36,8 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="KaiKhorus" auBinaryLocation="/Users/kai/Desktop"
-                       vst3BinaryLocation="/Users/kai/Desktop"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Space-Octopus" auBinaryLocation="$(HOME)/../../Library/Audio/Plug-Ins/Components/"
+                       vst3BinaryLocation="$(HOME)/../../Library/Audio/Plug-Ins/VST3/"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="KaiKhorus"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
