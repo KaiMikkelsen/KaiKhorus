@@ -10,6 +10,12 @@ Button 1 is used for a more subtle chorus sound, while button 2 is used for a st
 
 To download just the effect plugin, download the AuandVST3.zip file. Unzip, and put either the Vst3 or Au file in your plugins directory depending on your system.
 
+## Sound Demo
+
+The Sound demo is available to download and listen to as an .mp3 file.
+The demo was recorded with a Gibson Les Paul Bridge pickup, straight into a Scarlet Solo interface, the first half of the sound demo is with no effects applied.
+The next half of the demo is with the chorus applied with Button 1 and Mix at 60% (the default setting).
+
 ## The resources I used in order to make this project:
 
 1. Audio Effects: Theory, Implementation and Application by Joshua D. Reiss
