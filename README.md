@@ -1,5 +1,3 @@
-# KaiKhorus
-
 This is a chorus plugin based on the Juno 60 chorus.
 
 ![Screen Shot 2021-12-28 at 3 30 15 PM](https://user-images.githubusercontent.com/43660096/147614601-a2169529-d971-454e-b2e0-3f8291b9a943.png)
